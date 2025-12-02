@@ -125,11 +125,23 @@ class DSTab(QWidget):
             elif operation == 'postorder':
                 self.execute_traversal('postorder')
             elif operation.startswith('start_challenge'):
-                self.parent().parent().start_challenge(self.ds_type)
+                main_window = self.window()
+                if hasattr(main_window, 'start_challenge'):
+                    main_window.start_challenge(self.ds_type)
+                else:
+                    raise AttributeError("Main window does not have 'start_challenge'")
             elif operation == 'validate_challenge':
-                self.parent().parent().validate_challenge()
+                main_window = self.window()
+                if hasattr(main_window, 'validate_challenge'):
+                    main_window.validate_challenge()
+                else:
+                    raise AttributeError("Main window does not have 'validate_challenge'")
             elif operation == 'show_hint':
-                self.parent().parent().show_hint()
+                main_window = self.window()
+                if hasattr(main_window, 'show_hint'):
+                    main_window.show_hint()
+                else:
+                    raise AttributeError("Main window does not have 'show_hint'")
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Operation failed: {str(e)}")
